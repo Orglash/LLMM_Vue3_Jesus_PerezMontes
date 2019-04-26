@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<title>Ejercicio Vue3 Jesus Perez Montes</title>
+</head>
+<body>
+	<div class="container">
+		<h1>People of Draconia</h1>
+		<h2>Insert the name of your candidate</h2>
+		<input v-model="newCandidate" class="form-control" @keyup.enter="add">
+			<ul class="list-group">
+			<li v-for="candidate in candidates" class="list-group-item">
+			{{ candidate.name }} has {{ candidate.votes }} votes.
+				<button @click="vote($index)" type="button" class="btn">Vote</button>
+			</li>
+		</ul>
+		<h2>The chosen High Priest is: {{chosen}}
+	</div>
+</body>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/vue/1.0.18/vue.js"></script>
+<script type="text/javascript">
+
+	let component =new Vue ({
+		el: '.container',
+		data: {
+			candidates: [],
+			newCandidate: "",
+		},
+		
+		methods:{
+			add: function(){
+				this.candidates.push({name: this.newCandidate, votes: 0})
+			},
+			vote: function(index){
+				this.candidates[index].votes++;
+			},
+		},
+		computed: {
+			chosen: function(){
+				let maxVotes=0;
+				let indexChosen=-1;
+
+				this.candidates.forEach(function(element, index){
+					console.log(element.votes);
+					if(element.votes>maxVotes){
+						indexChosen=index;
+						maxVotes=element.votes;
+					}
+				});
+
+				if(indexChosen!=-1)
+					return this.candidates[indexChosen].name;
+				else
+					return;
+			}
+		}
+	});
+</script>
+</html>
